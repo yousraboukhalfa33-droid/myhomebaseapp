@@ -8,6 +8,13 @@
       "when": 1795375988053,
       "tag": "0000_daily_life_foundation",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795377028288,
+      "tag": "0001_restrict_lifecycle_function_execution",
+      "breakpoints": true
     }
   ]
 }
