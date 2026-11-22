@@ -1,23 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, ClientOnly, Navigate } from '@tanstack/react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
+import { AuthPage } from '@/features/home/auth';
+import { sessionOptions, pageHead } from '@/features/home/queries';
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
+  head: () => pageHead('Your home base', 'A calm, private home for your priorities, thoughts and everyday life.'),
   component: Index,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+function Index(){return <ClientOnly fallback={<div className="route-state">My Home Base</div>}><Suspense fallback={<div className="route-state">Opening your space…</div>}><HomeEntry/></Suspense></ClientOnly>;}
+function HomeEntry(){const {data}=useSuspenseQuery(sessionOptions);return data?<Navigate to="/today"/>:<AuthPage/>;}

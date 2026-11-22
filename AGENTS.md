@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Keep first-party private data operations in authenticated server functions and owner-scoped RLS; route guards protect navigation, not endpoints.
+- Group dashboard logic, validation, queries and reusable views in `src/features/home`; leaf routes supply page metadata and prime cached queries.
+- The public root resolves identity client-side and directs signed-in users to a named protected home; never create a second route claiming `/`.
+- Register one root auth transition subscriber; cancel and clear protected query caches before sign-out to prevent stale private data.
+- Enforce daily priority slots and scale bounds in database constraints and shared input schemas so all entry points obey the same rules.
